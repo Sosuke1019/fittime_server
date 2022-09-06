@@ -21,7 +21,7 @@ func SetRouter(e *echo.Echo) error {
 	api := e.Group("/api")
 	{
 		// ping
-		api.GET("/ping", GetPing)
+		api.GET("/ping", GetPingHandler)
 
 		// User
 		apiUser := api.Group("/user")

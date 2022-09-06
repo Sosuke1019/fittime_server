@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func GetPing(c echo.Context) error {
+func GetPingHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, "pong")
 }
