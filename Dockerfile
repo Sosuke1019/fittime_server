@@ -5,3 +5,7 @@ FROM golang:1.19-alpine as server-build
 WORKDIR  /go/src/fittime_server
 # ローカルの現在のディレクトリから、コンテナの作業ディレクトリにコピー
 COPY . .
+
+RUN go install github.com/cosmtrek/air@latest
+
+CMD ["air", "-c", ".air.toml"]
