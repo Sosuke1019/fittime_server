@@ -15,10 +15,10 @@
 # vendor/
 
 # code
-.idea
-.code
+.idea/*
+.code/*
 
 # volume
-mysql/data
-phpmyadmin
+mysql/data/*
+phpmyadmin/*
 
