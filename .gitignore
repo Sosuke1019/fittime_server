@@ -13,3 +13,12 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# code
+.idea
+.code
+
+# volume
+mysql/data
+phpmyadmin
+
