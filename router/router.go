@@ -18,7 +18,11 @@ func SetRouter(e *echo.Echo) error {
 	e.Use(middleware.CORS())
 
 	// api
-	e.GET("/api/ping", GetPing)
+	e.Group("/api"){
+		// ping
+		e.GET("/ping", GetPing)
+	}
+
 
 	// 8000番のポートを開く(*2)
 	err := e.Start(":8000")
