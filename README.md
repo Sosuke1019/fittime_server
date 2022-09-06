@@ -6,3 +6,4 @@ docker compose up -d --build
 ```
 
 サーバーは 8000番,phpmyadminは4040番に起動できる。
+
