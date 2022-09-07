@@ -1,7 +1,8 @@
 package model
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 
 	"github.com/google/uuid"
@@ -25,8 +26,10 @@ func CreateUser(username string, mail string, password string) error {
 		return errors.New("mail already exists")
 	}
 	id, err := uuid.NewUUID()
-	p := []byte(password)
-	pass := md5.Sum(p)
+	func toHash(password string) string {
+		converted := sha256.Sum256([]byte(password))
+		return hex.EncodeToString(converted[:])
+	}
 	newUser := User{
 		ID:       id,
 		Name:     username,

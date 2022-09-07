@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/ponyo-E/fittime_server/model"
 	"net/http"
 	"net/mail"
+
+	"github.com/labstack/echo/v4"
+	"github.com/ponyo-E/fittime_server/model"
 )
 
 type ReqCreateUser struct {
