@@ -63,3 +63,9 @@ func SearchUser(word string) ([]User, error) {
 
 	return users, nil
 }
+
+func AddName(userId uuid.UUID, name string) error {
+	err := db.Model(&User{}).Where("id = ?", userId).Update("Name", name).Error
+
+	return err
+}
