@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
@@ -16,7 +17,15 @@ var db *gorm.DB
 func DBConnection() *sql.DB {
 	dsn := GetDBConfig()
 	var err error
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	for i := 0; i < 100; i++ {
+		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		if err == nil {
+			break
+		}
+		time.Sleep(time.Second * 2)
+	}
+
 	if err != nil {
 		panic(fmt.Errorf("DB Error: %w", err))
 	}
@@ -42,5 +51,6 @@ func GetDBConfig() string {
 
 // Task型のテーブルを作成する
 func CreateTable(db *gorm.DB) {
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{}, &Exsercise{})
+	db.AutoMigrate(&Menu{})
 }

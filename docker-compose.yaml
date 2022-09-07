@@ -28,6 +28,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: fittime
+    cap_add:
+      - SYS_NICE
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:
       - ./mysql/data:/var/lib/mysql
@@ -46,3 +48,7 @@ services:
       - "4040:80"
     volumes:
       - ./phpmyadmin/sessions:/sessions
+
+volumes:
+  data-volume:
+    driver: local
