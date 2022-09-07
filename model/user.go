@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+
 	"github.com/google/uuid"
 )
 
@@ -23,11 +24,12 @@ func CreateUser(username string, mail string, password string) error {
 		return errors.New("mail already exists")
 	}
 	id, err := uuid.NewUUID()
+
 	newUser := User{
 		ID:       id,
 		Name:     username,
 		Mail:     mail,
-		Password: password,
+		Password: pass,
 		Profile:  "",
 		Path:     "",
 		Point:    0,
