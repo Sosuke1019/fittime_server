@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+
 	"github.com/google/uuid"
 )
 
@@ -36,3 +37,11 @@ func CreateUser(username string, mail string, password string) error {
 	err = db.Create(&newUser).Error
 	return err
 }
+
+func AddProfile(profile string) error {
+	db.Model(&User{}).Where("id = ?", true).Update(&profile)
+}
+
+
+ユーザーidはパラメータで取得
+新しいprofileを入れる

@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/ponyo-E/fittime_server/model"
 	"net/http"
 	"net/mail"
+
+	"github.com/labstack/echo/v4"
+	"github.com/ponyo-E/fittime_server/model"
 )
 
 type ReqCreateUser struct {
@@ -30,6 +31,22 @@ func CreateUserHandler(c echo.Context) error {
 	}
 
 	err = model.CreateUser(req.Username, req.Mail, req.Password)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	return c.NoContent(http.StatusOK)
+}
+
+type ReqProfile struct {
+	Profile string `json:"profile"`
+}
+
+func AddProfileHandler(c echo.Context) error {
+
+	var req ReqProfile
+
+	err := c.Bind(&req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
