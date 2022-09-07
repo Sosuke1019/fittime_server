@@ -29,6 +29,12 @@ func SetRouter(e *echo.Echo) error {
 			apiUser.POST("/create", CreateUserHandler)
 		}
 
+		// Search
+		apiMenu := api.Group("/search")
+		{
+			apiMenu.GET("", SearchHandler)
+		}
+
 	}
 
 	// 8000番のポートを開く(*2)
