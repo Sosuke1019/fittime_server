@@ -2,8 +2,14 @@
 
 ## 開発環境を起動する
 ```
-docker compose up -d --build
+make dev
 ```
+を実行する。
 
-サーバーは 8000番,phpmyadminは4040番に起動できる。
+サーバーは自動で起動し、
+
+- アプリサーバーはlocalhost:8000
+- phpmyadminはlocalhost:4040番
+
+に起動する。
 

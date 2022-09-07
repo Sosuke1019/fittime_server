@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	_ "net/http"
 	"os"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func SetRouter(e *echo.Echo) error {
@@ -27,6 +28,7 @@ func SetRouter(e *echo.Echo) error {
 		apiUser := api.Group("/user")
 		{
 			apiUser.POST("/create", CreateUserHandler)
+			apiUser.PATCH("/:userId/profile", AddProfileHandler)
 		}
 
 		// Auth
@@ -34,7 +36,6 @@ func SetRouter(e *echo.Echo) error {
 		{
 			apiAuth.POST("/login", LoginHandler)
 		}
-
 	}
 
 	// 8000番のポートを開く(*2)

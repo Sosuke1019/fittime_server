@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+
 	"github.com/google/uuid"
 )
 
@@ -41,5 +42,11 @@ func CreateUser(username string, mail string, pass string) error {
 	}
 
 	err = db.Create(&newUser).Error
+	return err
+}
+
+func AddProfile(userId uuid.UUID, profile string) error {
+	err := db.Model(&User{}).Where("id = ?", userId).Update("Profile", profile).Error
+
 	return err
 }
