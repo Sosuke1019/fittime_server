@@ -7,7 +7,7 @@ import (
 
 // User型を定義する
 type User struct {
-	ID       uuid.UUID
+	ID       uuid.UUID `gorm:"primaryKey"`
 	Name     string
 	Mail     string
 	Password string
