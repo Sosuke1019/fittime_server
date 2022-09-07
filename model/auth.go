@@ -1,34 +1,30 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // パスワードをハッシュ化する
-func HashPassword(password string) ([]byte, error) {
-	convert := []byte(password)
-	hashedPass, err := bcrypt.GenerateFromPassword(convert, bcrypt.DefaultCost)
-	return hashedPass, err
+func HashPassword(pass string) []byte {
+	convert := []byte(pass)
+	hash, _ := bcrypt.GenerateFromPassword(convert, 8)
+	return hash
 }
 
-func CheckPassword(mail string, password string) (uuid.UUID, error) {
-	hashedPass, err := HashPassword(password)
-	if err != nil {
-		return "", err
-	}
+func CheckPassword(mail string, pass string) (*User, error) {
 
 	var user User
 	// mailからpasswordを取得
-	err = db.Model(&User{}).Where("mail = ?", mail).Find(&user).Error
+	err := db.Model(&User{}).Where("mail = ?", mail).Find(&user).Error
 	if err != nil {
-		return "", err
-	}
-	err = bcrypt.CompareHashAndPassword(hashedPass, user.Password)
-	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return user.ID, nil
+	err = bcrypt.CompareHashAndPassword(user.Password, []byte(pass))
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 
 }

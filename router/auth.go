@@ -23,12 +23,12 @@ func LoginHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	userId, err := model.CheckPassword(req.Mail, req.Password)
+	user, err := model.CheckPassword(req.Mail, req.Password)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusForbidden, "Forbidden")
 	}
 	res := ResLogin{
-		UserID: userId,
+		UserID: user.ID,
 	}
 	return c.JSON(http.StatusOK, res)
 }
