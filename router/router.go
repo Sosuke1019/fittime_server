@@ -29,6 +29,12 @@ func SetRouter(e *echo.Echo) error {
 			apiUser.POST("/create", CreateUserHandler)
 		}
 
+		// Auth
+		apiAuth := api.Group("/auth")
+		{
+			apiAuth.POST("/login", LoginHandler)
+		}
+
 	}
 
 	// 8000番のポートを開く(*2)

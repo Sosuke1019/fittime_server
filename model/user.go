@@ -10,7 +10,7 @@ type User struct {
 	ID       uuid.UUID `gorm:"primaryKey"`
 	Name     string
 	Mail     string
-	Password string
+	Password []byte
 	Profile  string
 	Path     string
 	Point    int
