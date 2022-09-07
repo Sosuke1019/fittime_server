@@ -20,6 +20,7 @@ type ResExercisePart struct {
 
 type ResMenu struct {
 	MenuId    uuid.UUID         `json:"menuId"`
+	Title     string            `json:"title"`
 	UserName  string            `json:"username"`
 	Body      string            `json:"body"`
 	Nice      int               `json:"nice"`
@@ -68,6 +69,7 @@ func SearchHandler(c echo.Context) error {
 
 		resMenu := ResMenu{
 			MenuId:    menu.ID,
+			Title:     menu.Title,
 			UserName:  menu.User.Name,
 			Body:      menu.Body,
 			Nice:      menu.Nice,
