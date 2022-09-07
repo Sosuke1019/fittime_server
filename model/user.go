@@ -1,7 +1,9 @@
 package model
 
 import (
+	"crypto/md5"
 	"errors"
+
 	"github.com/google/uuid"
 )
 
@@ -10,7 +12,7 @@ type User struct {
 	ID       uuid.UUID
 	Name     string
 	Mail     string
-	Password string
+	Password [16]byte
 	Profile  string
 	Path     string
 	Point    int
@@ -23,11 +25,13 @@ func CreateUser(username string, mail string, password string) error {
 		return errors.New("mail already exists")
 	}
 	id, err := uuid.NewUUID()
+	p := []byte(password)
+	pass := md5.Sum(p)
 	newUser := User{
 		ID:       id,
 		Name:     username,
 		Mail:     mail,
-		Password: password,
+		Password: pass,
 		Profile:  "",
 		Path:     "",
 		Point:    0,
