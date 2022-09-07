@@ -35,7 +35,6 @@ func SetRouter(e *echo.Echo) error {
 
 				apiUserId.POST("/menu", PostMenuHandler)
 			}
-
 		}
 
 		// Exercise
