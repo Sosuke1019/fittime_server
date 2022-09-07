@@ -19,7 +19,7 @@ type User struct {
 }
 
 func CreateUser(username string, mail string, pass string) error {
-	var count int
+	var count int64
 	db.Model(&User{}).Where("mail = ?", mail).Count(&count)
 	if count != 0 {
 		return errors.New("mail already exists")
