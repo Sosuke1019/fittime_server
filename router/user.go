@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/google/uuid"
 	"net/http"
 	"net/mail"
 
@@ -44,16 +45,21 @@ type ReqProfile struct {
 
 func AddProfileHandler(c echo.Context) error {
 
-	req := ReqProfile{}
-
-	err := c.Bind(&req)
+	userId, err := uuid.Parse(c.Param("userId"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "バインドエラー")
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	err = model.AddProfile(req.Profile, c.Param("id"))
+	var req ReqProfile
+
+	err = c.Bind(&req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "挿入エラー")
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	err = model.AddProfile(userId, req.Profile)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 	return c.NoContent(http.StatusOK)
 }

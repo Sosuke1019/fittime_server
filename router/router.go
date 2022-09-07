@@ -28,7 +28,7 @@ func SetRouter(e *echo.Echo) error {
 		apiUser := api.Group("/user")
 		{
 			apiUser.POST("/create", CreateUserHandler)
-			apiUser.POST("/:id/profile", AddProfileHandler)
+			apiUser.PATCH("/:userId/profile", AddProfileHandler)
 		}
 	}
 

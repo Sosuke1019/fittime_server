@@ -38,14 +38,8 @@ func CreateUser(username string, mail string, password string) error {
 	return err
 }
 
-func AddProfile(profile string, id string) error {
-	err := db.Model(&User{}).Where("id = ?", id).Update("Profile", profile).Error
+func AddProfile(userId uuid.UUID, profile string) error {
+	err := db.Model(&User{}).Where("id = ?", userId).Update("Profile", profile).Error
 
 	return err
-	// if err != nil {
-	// 	return errors.New("update error")
-	// }
 }
-
-//ユーザーidはパラメータで取得
-//新しいprofileを入れる
