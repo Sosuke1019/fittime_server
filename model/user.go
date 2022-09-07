@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-
 	"github.com/google/uuid"
 )
 
@@ -20,7 +19,7 @@ type User struct {
 }
 
 func CreateUser(username string, mail string, pass string) error {
-	var count int64
+	var count int
 	db.Model(&User{}).Where("mail = ?", mail).Count(&count)
 	if count != 0 {
 		return errors.New("mail already exists")
