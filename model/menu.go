@@ -2,11 +2,6 @@ package model
 
 import "github.com/google/uuid"
 
-type Exercise struct {
-	ID   uuid.UUID `gorm:"primaryKey"`
-	Name string
-}
-
 type ExercisePart struct {
 	ID         uuid.UUID `gorm:"primaryKey"`
 	ExerciseID uuid.UUID `gorm:"size:30"`

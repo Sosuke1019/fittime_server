@@ -35,7 +35,11 @@ func SetRouter(e *echo.Echo) error {
 
 				apiUserId.POST("/menu", PostMenuHandler)
 			}
+
 		}
+
+		// Exercise
+		api.GET("/exercise", GetExerciseHandler)
 
 		// Search
 		apiSearch := api.Group("/search")
