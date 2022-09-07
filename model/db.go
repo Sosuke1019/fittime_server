@@ -30,6 +30,7 @@ func DBConnection() *sql.DB {
 		panic(fmt.Errorf("DB Error: %w", err))
 	}
 	CreateTable(db)
+	CreateData()
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic(fmt.Errorf("DB Error: %w", err))
