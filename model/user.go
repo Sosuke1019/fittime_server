@@ -49,3 +49,17 @@ func AddProfile(userId uuid.UUID, profile string) error {
 
 	return err
 }
+
+func SearchUser(word string) ([]User, error) {
+	var users []User
+	err := db.Where("name LIKE ?", "%"+word+"%").Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if len(users) > 5 {
+		users = users[:5]
+	}
+
+	return users, nil
+}
