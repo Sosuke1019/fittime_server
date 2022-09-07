@@ -35,6 +35,7 @@ func SetRouter(e *echo.Echo) error {
 		apiAuth := api.Group("/auth")
 		{
 			apiAuth.POST("/login", LoginHandler)
+			apiAuth.POST("/:userId/logout", LogoutHandler)
 		}
 	}
 

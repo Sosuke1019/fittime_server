@@ -32,3 +32,7 @@ func LoginHandler(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, res)
 }
+
+func LogoutHandler(c echo.Context) error {
+	return c.NoContent(http.StatusOK)
+}
