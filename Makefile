@@ -2,7 +2,7 @@
 dev:
 	docker-compose down
 	rm -rf mysql
-	rm -rf phpmyadmin
+	rm -rf phpmyadminc
 	docker compose up -d --build
 
 .PHONY: restart
