@@ -19,12 +19,12 @@ type User struct {
 }
 
 func CreateUser(username string, mail string, pass string) error {
-	var count int
+	var count int64
 	db.Model(&User{}).Where("mail = ?", mail).Count(&count)
 	if count != 0 {
 		return errors.New("mail already exists")
 	}
-	id, err := uuid.NewUUID()
+	id, _ := uuid.NewUUID()
 
 	hash := HashPassword(pass)
 
@@ -40,7 +40,7 @@ func CreateUser(username string, mail string, pass string) error {
 		Point:    0,
 	}
 
-	err = db.Create(&newUser).Error
+	err := db.Create(&newUser).Error
 	return err
 }
 

@@ -19,6 +19,7 @@ type ExercisePart struct {
 
 type Menu struct {
 	ID            uuid.UUID `gorm:"primaryKey"`
+	Title         string
 	UserID        uuid.UUID `gorm:"size:30"`
 	User          User
 	Body          string
@@ -40,4 +41,16 @@ func SearchMenu(word string) ([]Menu, error) {
 	}
 
 	return menus, nil
+}
+
+func AddMenu(menu Menu) error {
+	err := db.Create(&menu).Error
+	if err != nil {
+		return err
+	}
+	err = db.Create(&menu.ExerciseParts).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -22,7 +22,7 @@
 mysql/data/*
 phpmyadmin/*
 
-tmp/*
+tmp
 
 fittime_server
 
