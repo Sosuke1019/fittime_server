@@ -15,7 +15,7 @@ services:
       DB_DBNAME: fittime
     tty: true
     volumes:
-      - ./:/app/fittime
+      - ./:/go/src/fittime_server
     ports:
       - "8000:8000"
     depends_on:
