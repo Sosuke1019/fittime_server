@@ -64,3 +64,28 @@ func AddProfileHandler(c echo.Context) error {
 	}
 	return c.NoContent(http.StatusOK)
 }
+
+type ReqName struct {
+	Name string `json:"name"`
+}
+
+func AddNameHandler(c echo.Context) error {
+
+	userId, err := uuid.Parse((c.Param("userId")))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	var req ReqName
+
+	err = c.Bind(&req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	err = model.AddName(userId, req.Name)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+	return c.NoContent((http.StatusOK))
+}
