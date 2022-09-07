@@ -22,4 +22,8 @@
 mysql/data/*
 phpmyadmin/*
 
+tmp/*
+
+fittime_server
+
 .DS_Store
