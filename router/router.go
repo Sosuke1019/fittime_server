@@ -31,6 +31,12 @@ func SetRouter(e *echo.Echo) error {
 			apiUser.PATCH("/:userId/profile", AddProfileHandler)
 		}
 
+		// Search
+		apiMenu := api.Group("/search")
+		{
+			apiMenu.GET("", SearchHandler)
+		}
+
 		// Auth
 		apiAuth := api.Group("/auth")
 		{
