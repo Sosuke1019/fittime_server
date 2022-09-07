@@ -1,8 +1,6 @@
 package model
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 
 	"github.com/google/uuid"
@@ -13,7 +11,7 @@ type User struct {
 	ID       uuid.UUID
 	Name     string
 	Mail     string
-	Password [16]byte
+	Password []byte
 	Profile  string
 	Path     string
 	Point    int
@@ -26,10 +24,7 @@ func CreateUser(username string, mail string, password string) error {
 		return errors.New("mail already exists")
 	}
 	id, err := uuid.NewUUID()
-	func toHash(password string) string {
-		converted := sha256.Sum256([]byte(password))
-		return hex.EncodeToString(converted[:])
-	}
+
 	newUser := User{
 		ID:       id,
 		Name:     username,
