@@ -44,12 +44,16 @@ type ReqProfile struct {
 
 func AddProfileHandler(c echo.Context) error {
 
-	var req ReqProfile
+	req := ReqProfile{}
 
 	err := c.Bind(&req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+		return echo.NewHTTPError(http.StatusBadRequest, "バインドエラー")
 	}
 
+	err = model.AddProfile(req.Profile, c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "挿入エラー")
+	}
 	return c.NoContent(http.StatusOK)
 }
