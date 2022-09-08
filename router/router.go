@@ -31,6 +31,7 @@ func SetRouter(e *echo.Echo) error {
 
 			apiUserId := apiUser.Group("/:userId")
 			{
+				apiUserId.GET("", GetUserHandler)
 				apiUserId.PATCH("/profile", UpdateProfileHandler)
 				apiUserId.PATCH("/username", UpdateUsernameHandler)
 
