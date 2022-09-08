@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -9,7 +10,17 @@ import (
 )
 
 func GetFavoriteHandler(c echo.Context) error {
-	return c.NoContent(http.StatusOK)
+	userId, err := uuid.Parse(c.Param("userId"))
+	if err != nil {
+		fmt.Println(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+	resMenu, err := model.GetFavorite(userId)
+	if err != nil {
+		fmt.Println(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+	return c.JSON(http.StatusOK, resMenu)
 }
 
 func PostFavoriteHandler(c echo.Context) error {
