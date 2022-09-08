@@ -31,6 +31,7 @@ func DBConnection() *sql.DB {
 	}
 	CreateTable(db)
 	CreateDummy()
+	CreateExercise()
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic(fmt.Errorf("DB Error: %w", err))
