@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 
 	"net/http"
@@ -22,6 +23,8 @@ func CreateUserHandler(c echo.Context) error {
 
 	err := c.Bind(&req)
 
+	fmt.Println(req)
+
 	if err != nil {
 		//バインドが間違えるとエラーを出す
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
@@ -40,11 +43,45 @@ func CreateUserHandler(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
+type ResUserData struct {
+	ID      uuid.UUID
+	Name    string
+	Profile string
+	Point   int
+	Level   int
+	Status  string
+}
+
+func GetUserHandler(c echo.Context) error {
+	userId, err := uuid.Parse(c.Param("userId"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	user, err := model.GetUser(userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	level, status := model.GetLevelAndStatus(user.Point)
+	// user型　から ResUser型に変換
+	resUser := ResUserData{
+		ID:      user.ID,
+		Name:    user.Name,
+		Profile: user.Profile,
+		Point:   user.Point,
+		Level:   level,
+		Status:  status,
+	}
+
+	return c.JSON(http.StatusOK, resUser)
+}
+
 type ReqProfile struct {
 	Profile string `json:"profile"`
 }
 
-func AddProfileHandler(c echo.Context) error {
+func UpdateProfileHandler(c echo.Context) error {
 
 	userId, err := uuid.Parse(c.Param("userId"))
 	if err != nil {
@@ -58,7 +95,32 @@ func AddProfileHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	err = model.AddProfile(userId, req.Profile)
+	err = model.UpdateProfile(userId, req.Profile)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+	return c.NoContent(http.StatusOK)
+}
+
+type ReqName struct {
+	Name string `json:"username"`
+}
+
+func UpdateUsernameHandler(c echo.Context) error {
+
+	userId, err := uuid.Parse((c.Param("userId")))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	var req ReqName
+
+	err = c.Bind(&req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	err = model.UpdateName(userId, req.Name)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}

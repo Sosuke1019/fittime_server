@@ -28,14 +28,29 @@ func SetRouter(e *echo.Echo) error {
 		apiUser := api.Group("/user")
 		{
 			apiUser.POST("/create", CreateUserHandler)
-			apiUser.PATCH("/:userId/profile", AddProfileHandler)
-			apiUser.POST("/:userId/log", AddLogHandler)
+
+			apiUserId := apiUser.Group("/:userId")
+			{
+				apiUserId.GET("", GetUserHandler)
+				apiUserId.PATCH("/profile", UpdateProfileHandler)
+				apiUserId.PATCH("/username", UpdateUsernameHandler)
+
+				apiUserId.POST("/log", AddLogHandler)
+
+				apiUserId.POST("/menu", PostMenuHandler)
+				apiUserId.GET("/favorite", GetFavoriteHandler)
+				apiUserId.POST("/favorite/:menuId", PostFavoriteHandler)
+			}
+
 		}
 
+		// Exercise
+		api.GET("/exercise", GetExerciseHandler)
+
 		// Search
-		apiMenu := api.Group("/search")
+		apiSearch := api.Group("/search")
 		{
-			apiMenu.GET("", SearchHandler)
+			apiSearch.GET("", SearchHandler)
 		}
 
 		// Auth

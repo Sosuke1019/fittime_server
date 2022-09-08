@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/ponyo-E/fittime_server/model"
@@ -22,7 +23,7 @@ func LoginHandler(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
-
+	fmt.Println(req)
 	user, err := model.CheckPassword(req.Mail, req.Password)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusForbidden, "Forbidden")

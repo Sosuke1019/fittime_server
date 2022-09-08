@@ -9,8 +9,10 @@ import (
 type Log struct {
 	ID     uuid.UUID `gorm:"primaryKey"`
 	UserID uuid.UUID `gorm:"size:40"`
+	User   User
 	Date   time.Time
 	MenuId uuid.UUID `gorm:"size:40"`
+	Menu   Menu
 }
 
 func AddLog(userId uuid.UUID, menuId uuid.UUID) error {

@@ -18,13 +18,19 @@ type User struct {
 	Point    int
 }
 
+func GetLevelAndStatus(point int) (int, string) {
+	level := point / 10
+	status := "見習い勇者"
+	return level, status
+}
+
 func CreateUser(username string, mail string, pass string) error {
 	var count int64
 	db.Model(&User{}).Where("mail = ?", mail).Count(&count)
 	if count != 0 {
 		return errors.New("mail already exists")
 	}
-	id, err := uuid.NewUUID()
+	id, _ := uuid.NewUUID()
 
 	hash := HashPassword(pass)
 
@@ -40,12 +46,25 @@ func CreateUser(username string, mail string, pass string) error {
 		Point:    0,
 	}
 
-	err = db.Create(&newUser).Error
+	err := db.Create(&newUser).Error
 	return err
 }
 
-func AddProfile(userId uuid.UUID, profile string) error {
+func GetUser(userId uuid.UUID) (User, error) {
+	var user User
+	err := db.Model(&User{}).Where("id = ?", userId).Find(&user).Error
+
+	return user, err
+}
+
+func UpdateProfile(userId uuid.UUID, profile string) error {
 	err := db.Model(&User{}).Where("id = ?", userId).Update("Profile", profile).Error
+
+	return err
+}
+
+func UpdateName(userId uuid.UUID, name string) error {
+	err := db.Model(&User{}).Where("id = ?", userId).Update("Name", name).Error
 
 	return err
 }
