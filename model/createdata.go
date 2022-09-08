@@ -34,10 +34,23 @@ func CreateDummy() {
 	exerciseIdList := CreateExercise()
 	var users []User
 	db.Find(&users)
+	var i int = 0
 	for _, user := range users {
 		for _, exerciseId := range exerciseIdList {
+			i++
 			id, _ := uuid.NewUUID()
-			menu := Menu{ID: id, UserID: user.ID, ExerciseID: exerciseId}
+			title := "menuTitle" + strconv.Itoa(i)
+			body := "menuBody" + strconv.Itoa(i)
+			menu := Menu{
+				ID:         id,
+				Title:      title,
+				UserID:     user.ID,
+				Body:       body,
+				Path:       "",
+				Nice:       0,
+				Point:      0,
+				ExerciseID: exerciseId,
+			}
 			db.Create(&menu)
 			id, _ = uuid.NewUUID()
 			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
