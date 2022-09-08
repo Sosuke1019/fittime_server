@@ -53,6 +53,12 @@ func SetRouter(e *echo.Echo) error {
 			apiSearch.GET("", SearchHandler)
 		}
 
+		//Timeline
+		apiTimeline := api.Group("/timeline")
+		{
+			apiTimeline.GET("", TimelineHandler)
+		}
+
 		// Auth
 		apiAuth := api.Group("/auth")
 		{
