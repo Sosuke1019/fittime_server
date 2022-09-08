@@ -3,8 +3,8 @@ package model
 import "github.com/google/uuid"
 
 type Exercise struct {
-	ID   uuid.UUID `gorm:"primaryKey"`
-	Name string
+	ID   uuid.UUID `gorm:"primaryKey" json:"id"`
+	Name string    `json:"name"`
 }
 
 func GetExercises() ([]Exercise, error) {
