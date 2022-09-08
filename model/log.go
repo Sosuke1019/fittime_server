@@ -25,6 +25,21 @@ func GetTimeline() ([]Menu, error) {
 	return menu, nil
 }
 
-//logデータベースから降順 -> 多分○
-//limitで上から5つに制限する -> ○
-//ログのmenu.idからmenuの名前を持ってくる
+// logデータベースから降順 -> 多分○
+// limitで上から5つに制限する -> ○
+// ログのmenu.idからmenuの名前を持ってくる
+func AddLog(userId uuid.UUID, menuId uuid.UUID) error {
+	id, err := uuid.NewUUID()
+
+	date := time.Now()
+
+	newLog := Log{
+		ID:     id,
+		UserID: userId,
+		Date:   date,
+		MenuId: menuId,
+	}
+
+	err = db.Model(&Log{}).Create(&newLog).Error
+	return err
+}
