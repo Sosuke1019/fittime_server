@@ -35,8 +35,6 @@ func SetRouter(e *echo.Echo) error {
 				apiUserId.PATCH("/profile", UpdateProfileHandler)
 				apiUserId.PATCH("/username", UpdateUsernameHandler)
 
-				apiUserId.POST("/log/:menuId", AddLogHandler)
-
 				apiUserId.POST("/menu", PostMenuHandler)
 				apiUserId.GET("/favorite", GetFavoriteHandler)
 				apiUserId.POST("/favorite/:menuId", PostFavoriteHandler)
@@ -56,7 +54,8 @@ func SetRouter(e *echo.Echo) error {
 		//Timeline
 		apiTimeline := api.Group("/timeline")
 		{
-			apiTimeline.GET("", TimelineHandler)
+			apiTimeline.GET("", GetTimelineHandler)
+			apiTimeline.GET("/:userId", GetMyTimelineHandler)
 		}
 
 		// Auth

@@ -16,7 +16,7 @@ type ResTimeline struct {
 	Date     time.Time `json:"time"`
 }
 
-func TimelineHandler(c echo.Context) error {
+func GetTimelineHandler(c echo.Context) error {
 	// DBからTimeLineのデータを取得
 
 	logs, err := model.GetTimeline()
@@ -33,6 +33,21 @@ func TimelineHandler(c echo.Context) error {
 	// 参考になるのはModel>user.go>GetUser()
 
 	// MenuIdをMenuに変えて必要なデータを返す
+
+	return c.JSON(http.StatusOK, logs)
+}
+
+func GetMyTimelineHandler(c echo.Context) error {
+	userId, err := uuid.Parse(c.Param("userId"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "uuidエラー")
+	}
+
+	logs, err := model.GetMyTimeline(userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	return c.JSON(http.StatusOK, logs)
 }

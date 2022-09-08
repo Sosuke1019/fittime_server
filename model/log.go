@@ -86,3 +86,39 @@ func AddLog(userId uuid.UUID, menuId uuid.UUID) error {
 	err = db.Model(&Log{}).Create(&newLog).Error
 	return err
 }
+
+func GetMyTimeline(userId uuid.UUID) ([]ResTimeline, error) {
+	var logs []Timeline
+	err := db.Table("logs").Select("users.*,logs.date,menus.*,exercises.*").
+		Joins("left join menus on menus.id = logs.menu_id").
+		Joins("left join users on users.id = logs.user_id").
+		Joins("left join exercises on exercises.id = menus.exercise_id").
+		Where("users.id = ?", userId).
+		Order("logs.date").Limit(5).Find(&logs).Error
+	if err != nil {
+		return nil, err
+	}
+	var resTimeline []ResTimeline
+	for _, data := range logs {
+		fmt.Println(data)
+		resTimeline = append(resTimeline, ResTimeline{
+			UserId:   data.UserID,
+			UserName: data.User.Name,
+			Menu: ResMenu{
+				MenuId:   data.Menu.ID,
+				Title:    data.Menu.Title,
+				UserId:   data.UserID,
+				UserName: data.User.Name,
+				Body:     data.Menu.Body,
+				Nice:     data.Menu.Nice,
+				Point:    data.Menu.Nice,
+				Exercises: ResExercise{
+					ExerciseId: data.Menu.ExerciseID,
+					Name:       data.Exercise.Name,
+				},
+			},
+			Date: data.Date,
+		})
+	}
+	return resTimeline, nil
+}
