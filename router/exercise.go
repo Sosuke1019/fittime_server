@@ -6,10 +6,18 @@ import (
 	"net/http"
 )
 
+type ResExercises struct {
+	Exercises []model.Exercise `json:"exercises"`
+}
+
 func GetExerciseHandler(c echo.Context) error {
 	exercises, err := model.GetExercises()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
-	return c.JSON(http.StatusOK, exercises)
+
+	resExercises := ResExercises{
+		Exercises: exercises,
+	}
+	return c.JSON(http.StatusOK, resExercises)
 }
