@@ -43,7 +43,7 @@ func CreateUserHandler(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-type ResUser struct {
+type ResUserData struct {
 	ID      uuid.UUID
 	Name    string
 	Profile string
@@ -65,7 +65,7 @@ func GetUserHandler(c echo.Context) error {
 
 	level, status := model.GetLevelAndStatus(user.Point)
 	// user型　から ResUser型に変換
-	resUser := ResUser{
+	resUser := ResUserData{
 		ID:      user.ID,
 		Name:    user.Name,
 		Profile: user.Profile,
@@ -103,7 +103,7 @@ func UpdateProfileHandler(c echo.Context) error {
 }
 
 type ReqName struct {
-	Name string `json:"name"`
+	Name string `json:"username"`
 }
 
 func UpdateUsernameHandler(c echo.Context) error {

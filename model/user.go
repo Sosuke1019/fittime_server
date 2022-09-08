@@ -54,7 +54,7 @@ func GetUser(userId uuid.UUID) (User, error) {
 	var user User
 	err := db.Model(&User{}).Where("id = ?", userId).Find(&user).Error
 
-	return err, user
+	return user, err
 }
 
 func UpdateProfile(userId uuid.UUID, profile string) error {
