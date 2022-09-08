@@ -7,59 +7,45 @@ import (
 	"net/http"
 )
 
-type ReqExercisePart struct {
-	ExerciseId uuid.UUID `json:"ExerciseId"`
-	Time       int       `json:"time"`
-}
 type ReqMenu struct {
-	Title         string            `json:"title"`
-	Body          string            `json:"body"`
-	ExerciseParts []ReqExercisePart `json:"exercises"`
+	Title      string    `json:"title"`
+	Body       string    `json:"body"`
+	ExerciseId uuid.UUID `json:"exerciseId"`
+	Time       int       `json:"time"`
 }
 
 func PostMenuHandler(c echo.Context) error {
 
 	userId, err := uuid.Parse(c.Param("userId"))
+
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+		return echo.NewHTTPError(http.StatusBadRequest, c.Param("userId"))
 	}
 
 	var req ReqMenu
 	err = c.Bind(&req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+		return echo.NewHTTPError(http.StatusBadRequest, "Bind Request")
 	}
 
-	id, _ := uuid.NewUUID()
-
-	var exerciseParts []model.ExercisePart
-	for i, r := range req.ExerciseParts {
-		ExercisePartId, _ := uuid.NewUUID()
-		exercisePart := model.ExercisePart{
-			ID:         ExercisePartId,
-			ExerciseID: r.ExerciseId,
-			MenuID:     id,
-			No:         i,
-			Time:       r.Time,
-		}
-		exerciseParts = append(exerciseParts, exercisePart)
-	}
+	menuId, _ := uuid.NewUUID()
 
 	// ReqMenu型からMenu型に
 	menu := model.Menu{
-		ID:            id,
-		Title:         req.Title,
-		UserID:        userId,
-		Body:          req.Body,
-		Path:          "",
-		Nice:          0,
-		Point:         0,
-		ExerciseParts: exerciseParts,
+		ID:         menuId,
+		Title:      req.Title,
+		UserID:     userId,
+		Body:       req.Body,
+		Path:       "",
+		Nice:       0,
+		Point:      req.Time,
+		ExerciseID: req.ExerciseId,
 	}
 
 	err = model.AddMenu(menu)
+
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 	return c.NoContent(http.StatusOK)
 }

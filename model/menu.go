@@ -1,30 +1,52 @@
 package model
 
-import "github.com/google/uuid"
-
-type ExercisePart struct {
-	ID         uuid.UUID `gorm:"primaryKey"`
-	ExerciseID uuid.UUID `gorm:"size:30"`
-	Exercise   Exercise
-	MenuID     uuid.UUID `gorm:"size:30"`
-	Menu       Menu
-	No         int
-	Time       int
-}
+import (
+	"fmt"
+	"github.com/google/uuid"
+)
 
 type Menu struct {
-	ID            uuid.UUID `gorm:"primaryKey"`
-	Title         string
-	UserID        uuid.UUID `gorm:"size:30"`
-	User          User
-	Body          string
-	Path          string
-	Nice          int
-	Point         int
-	ExerciseParts []ExercisePart
+	ID         uuid.UUID `gorm:"primaryKey"`
+	Title      string
+	UserID     uuid.UUID `gorm:"size:40"`
+	User       User      `gorm:"foreignKey:UserID"`
+	Body       string
+	Path       string
+	Nice       int
+	Point      int
+	ExerciseID uuid.UUID `gorm:"size:40"`
+	Exercise   Exercise
 }
 
-func SearchMenu(word string) ([]Menu, error) {
+func AddMenu(menu Menu) error {
+	err := db.Create(&menu).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+type ResExercise struct {
+	ExerciseId uuid.UUID `json:"exerciseId"`
+	Name       string    `json:"exerciseName"`
+}
+
+type ResMenu struct {
+	MenuId    uuid.UUID   `json:"menuId"`
+	Title     string      `json:"title"`
+	UserId    uuid.UUID   `json:"userId"`
+	UserName  string      `json:"username"`
+	Body      string      `json:"body"`
+	Nice      int         `json:"nice"`
+	Point     int         `json:"point"`
+	Exercises ResExercise `json:"exercises"`
+}
+type ResSearch struct {
+	ResMenus []ResMenu `json:"menus"`
+}
+
+func SearchMenu(word string) (*ResSearch, error) {
 	var menus []Menu
 	err := db.Where("body LIKE ?", "%"+word+"%").Find(&menus).Error
 	if err != nil {
@@ -35,17 +57,53 @@ func SearchMenu(word string) ([]Menu, error) {
 		menus = menus[:5]
 	}
 
-	return menus, nil
-}
+	var user User
+	var exercise Exercise
+	var resMenus []ResMenu
+	for _, menu := range menus {
 
-func AddMenu(menu Menu) error {
-	err := db.Create(&menu).Error
-	if err != nil {
-		return err
+		//get username
+		err := db.Where("id = ?", menu.UserID).Find(&user).Error
+		if err != nil {
+			return nil, err
+		}
+
+		// get exercise
+		err = db.Where("id = ?", menu.ExerciseID).Find(&exercise).Error
+		if err != nil {
+			return nil, err
+		}
+
+		// exercise → ResExercise
+		resExercise := ResExercise{
+			ExerciseId: exercise.ID,
+			Name:       exercise.Name,
+		}
+
+		fmt.Println(resExercise)
+
+		// menu → ResMenu
+		resMenu := ResMenu{
+			MenuId:    menu.ID,
+			Title:     menu.Title,
+			UserId:    menu.UserID,
+			UserName:  user.Name,
+			Body:      menu.Body,
+			Nice:      menu.Nice,
+			Point:     menu.Point,
+			Exercises: resExercise,
+		}
+
+		fmt.Println(resMenu)
+
+		resMenus = append(resMenus, resMenu)
+
 	}
-	err = db.Create(&menu.ExerciseParts).Error
-	if err != nil {
-		return err
+
+	// ResMenu → ResSearch
+	resSearch := ResSearch{
+		ResMenus: resMenus,
 	}
-	return nil
+
+	return &resSearch, nil
 }
