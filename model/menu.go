@@ -20,7 +20,7 @@ type ExercisePart struct {
 type Menu struct {
 	ID            uuid.UUID `gorm:"primaryKey"`
 	Title         string
-	UserID        uuid.UUID `gorm:"size:30"`
+	UserID        uuid.UUID `gorm:"size:40"`
 	User          User
 	Body          string
 	Path          string

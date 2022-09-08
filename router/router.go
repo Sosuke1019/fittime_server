@@ -49,7 +49,7 @@ func SetRouter(e *echo.Echo) error {
 		//Timeline
 		apiTimeline := api.Group("/timeline")
 		{
-			apiTImeline.GET("", TimelineHandler)
+			apiTimeline.GET("", TimelineHandler)
 		}
 
 		// Auth

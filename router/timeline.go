@@ -6,19 +6,33 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/ponyo-E/fittime_server/model"
 )
 
 type ResTimeline struct {
-	userId   uuid.UUID `json:"userId"`
+	UserId   uuid.UUID `json:"userId"`
 	Username string    `json:"username"`
 	Menu     string    `json:"menu"`
 	Date     time.Time `json:"time"`
 }
 
 func TimelineHandler(c echo.Context) error {
-	return c.JSON(http.StatusOK)
-}
+	// DBからTimeLineのデータを取得
 
-//ログから最新の4つ持ってくる
-//ログのmenu.idからmenuの名前を持ってくる
-//データを整形して変えす
+	logs, err := model.GetTimeline()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if len(logs) == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "GetTimeline取得エラー")
+	}
+
+	// DBからmenuを取得
+	//logs[0].MenuId こんな感じでMenuIdがとれます
+	// 参考になるのはModel>user.go>GetUser()
+
+	// MenuIdをMenuに変えて必要なデータを返す
+
+	return c.NoContent(http.StatusOK)
+}
