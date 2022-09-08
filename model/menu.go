@@ -4,9 +4,9 @@ import "github.com/google/uuid"
 
 type ExercisePart struct {
 	ID         uuid.UUID `gorm:"primaryKey"`
-	ExerciseID uuid.UUID `gorm:"size:30"`
+	ExerciseID uuid.UUID `gorm:"size:40"`
 	Exercise   Exercise
-	MenuID     uuid.UUID `gorm:"size:30"`
+	MenuID     uuid.UUID `gorm:"size:40"`
 	Menu       Menu
 	No         int
 	Time       int
@@ -15,7 +15,7 @@ type ExercisePart struct {
 type Menu struct {
 	ID            uuid.UUID `gorm:"primaryKey"`
 	Title         string
-	UserID        uuid.UUID `gorm:"size:30"`
+	UserID        uuid.UUID `gorm:"size:40"`
 	User          User
 	Body          string
 	Path          string
