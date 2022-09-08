@@ -43,6 +43,40 @@ func CreateUserHandler(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
+type ResUser struct {
+	ID      uuid.UUID
+	Name    string
+	Profile string
+	Point   int
+	Level   int
+	Status  string
+}
+
+func GetUserHandler(c echo.Context) error {
+	userId, err := uuid.Parse(c.Param("userId"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	user, err := model.GetUser(userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
+	}
+
+	level, status := model.GetLevelAndStatus(user.Point)
+	// user型　から ResUser型に変換
+	resUser := ResUser{
+		ID:      user.ID,
+		Name:    user.Name,
+		Profile: user.Profile,
+		Point:   user.Point,
+		Level:   level,
+		Status:  status,
+	}
+
+	return c.JSON(http.StatusOK, resUser)
+}
+
 type ReqProfile struct {
 	Profile string `json:"profile"`
 }
