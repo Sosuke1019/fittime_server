@@ -34,5 +34,5 @@ func TimelineHandler(c echo.Context) error {
 
 	// MenuIdをMenuに変えて必要なデータを返す
 
-	return c.NoContent(http.StatusOK)
+	return c.JSON(http.StatusOK, logs)
 }
