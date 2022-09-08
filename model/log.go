@@ -1,15 +1,16 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Log struct {
 	ID     uuid.UUID `gorm:"primaryKey"`
-	UserID uuid.UUID `gorm:"size:30"`
+	UserID uuid.UUID `gorm:"size:40"`
 	User   User
 	Date   time.Time
-	MenuId uuid.UUID `gorm:"size:30"`
+	MenuId uuid.UUID `gorm:"size:40"`
 	Menu   Menu
 }
