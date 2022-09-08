@@ -14,6 +14,12 @@ type Favorite struct {
 	Menu   Menu
 }
 
+type FavoriteData struct {
+	User
+	Menu
+	Exercise
+}
+
 func AddFavorite(favorite Favorite) error {
 	err := db.Create(&favorite).Error
 	if err != nil {
@@ -23,9 +29,10 @@ func AddFavorite(favorite Favorite) error {
 }
 
 func GetFavorite(userId uuid.UUID) ([]*ResMenu, error) {
-	var menus []Menu
-	err := db.Table("menus").Select("menus.id,menus.title,menus.user_id,users.name,menus.body,menus.nice,menus.point,menus.exercise_id,exercises.name").
-		Joins("left join users on users.id = menus.user_id").
+	var menus []FavoriteData
+	err := db.Table("favorites").Select("users.*,menus.*,exercises.*").
+		Joins("left join menus on menus.id = favorites.menu_id").
+		Joins("left join users on users.id = favorites.user_id").
 		Joins("left join exercises on exercises.id = menus.exercise_id").
 		Where("users.id = ?", userId).
 		Limit(5).
@@ -39,15 +46,15 @@ func GetFavorite(userId uuid.UUID) ([]*ResMenu, error) {
 	for _, menu := range menus {
 		fmt.Println(menu)
 		resMenu = append(resMenu, &ResMenu{
-			MenuId:   menu.ID,
-			Title:    menu.Title,
-			UserId:   menu.UserID,
+			MenuId:   menu.Menu.ID,
+			Title:    menu.Menu.Title,
+			UserId:   menu.User.ID,
 			UserName: menu.User.Name,
-			Body:     menu.Body,
-			Nice:     menu.Nice,
-			Point:    menu.Point,
+			Body:     menu.Menu.Body,
+			Nice:     menu.Menu.Nice,
+			Point:    menu.Menu.Point,
 			Exercises: ResExercise{
-				ExerciseId: menu.ExerciseID,
+				ExerciseId: menu.Exercise.ID,
 				Name:       menu.Exercise.Name,
 			},
 		})
