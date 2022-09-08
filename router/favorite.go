@@ -33,7 +33,9 @@ func PostFavoriteHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	favorite := model.Favorite{UserID: userId, MenuID: menuId}
+	id, _ := uuid.NewUUID()
+
+	favorite := model.Favorite{ID: id, UserID: userId, MenuID: menuId}
 	err = model.AddFavorite(favorite)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
