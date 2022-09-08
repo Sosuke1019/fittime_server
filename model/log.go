@@ -1,15 +1,30 @@
 package model
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Log struct {
 	ID     uuid.UUID `gorm:"primaryKey"`
-	UserID uuid.UUID `gorm:"size:30"`
-	User   User
+	UserID uuid.UUID `gorm:"size:40"`
 	Date   time.Time
-	MenuId uuid.UUID `gorm:"size:30"`
-	Menu   Menu
+	MenuId uuid.UUID `gorm:"size:40"`
+}
+
+func AddLog(userId uuid.UUID, menuId uuid.UUID) error {
+	id, err := uuid.NewUUID()
+
+	date := time.Now()
+
+	newLog := Log{
+		ID:     id,
+		UserID: userId,
+		Date:   date,
+		MenuId: menuId,
+	}
+
+	err = db.Model(&Log{}).Create(&newLog).Error
+	return err
 }

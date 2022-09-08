@@ -64,10 +64,3 @@ func AddProfileHandler(c echo.Context) error {
 	}
 	return c.NoContent(http.StatusOK)
 }
-
-type ReqLog struct {
-}
-
-func AddLogHandler(c echo.Context) error {
-
-}
