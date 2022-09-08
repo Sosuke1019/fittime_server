@@ -30,6 +30,8 @@ func DBConnection() *sql.DB {
 		panic(fmt.Errorf("DB Error: %w", err))
 	}
 	CreateTable(db)
+	CreateDummy()
+	CreateExercise()
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic(fmt.Errorf("DB Error: %w", err))
@@ -51,5 +53,5 @@ func GetDBConfig() string {
 
 // Task型のテーブルを作成する
 func CreateTable(db *gorm.DB) {
-	db.AutoMigrate(&User{}, &Exercise{}, &Menu{}, &ExercisePart{}, &Log{})
+	db.AutoMigrate(&User{}, &Exercise{}, &Menu{}, &Favorite{}, &Log{})
 }
