@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 
 	"net/http"
@@ -21,6 +22,8 @@ func CreateUserHandler(c echo.Context) error {
 	var req ReqCreateUser
 
 	err := c.Bind(&req)
+
+	fmt.Println(req)
 
 	if err != nil {
 		//バインドが間違えるとエラーを出す
@@ -44,7 +47,7 @@ type ReqProfile struct {
 	Profile string `json:"profile"`
 }
 
-func AddProfileHandler(c echo.Context) error {
+func UpdateProfileHandler(c echo.Context) error {
 
 	userId, err := uuid.Parse(c.Param("userId"))
 	if err != nil {
@@ -58,7 +61,7 @@ func AddProfileHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	err = model.AddProfile(userId, req.Profile)
+	err = model.UpdateProfile(userId, req.Profile)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
@@ -69,7 +72,7 @@ type ReqName struct {
 	Name string `json:"name"`
 }
 
-func AddNameHandler(c echo.Context) error {
+func UpdateUsernameHandler(c echo.Context) error {
 
 	userId, err := uuid.Parse((c.Param("userId")))
 	if err != nil {
@@ -83,9 +86,9 @@ func AddNameHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
 
-	err = model.AddName(userId, req.Name)
+	err = model.UpdateName(userId, req.Name)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Bad Request")
 	}
-	return c.NoContent((http.StatusOK))
+	return c.NoContent(http.StatusOK)
 }

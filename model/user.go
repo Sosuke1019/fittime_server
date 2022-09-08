@@ -44,8 +44,14 @@ func CreateUser(username string, mail string, pass string) error {
 	return err
 }
 
-func AddProfile(userId uuid.UUID, profile string) error {
+func UpdateProfile(userId uuid.UUID, profile string) error {
 	err := db.Model(&User{}).Where("id = ?", userId).Update("Profile", profile).Error
+
+	return err
+}
+
+func UpdateName(userId uuid.UUID, name string) error {
+	err := db.Model(&User{}).Where("id = ?", userId).Update("Name", name).Error
 
 	return err
 }
@@ -62,10 +68,4 @@ func SearchUser(word string) ([]User, error) {
 	}
 
 	return users, nil
-}
-
-func AddName(userId uuid.UUID, name string) error {
-	err := db.Model(&User{}).Where("id = ?", userId).Update("Name", name).Error
-
-	return err
 }
