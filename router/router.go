@@ -40,6 +40,9 @@ func SetRouter(e *echo.Echo) error {
 
 		}
 
+		// Exercise
+		api.GET("/exercise", GetExerciseHandler)
+
 		// Search
 		apiSearch := api.Group("/search")
 		{
