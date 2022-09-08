@@ -8,27 +8,46 @@ import (
 
 type Menu struct {
 	ID         uuid.UUID `gorm:"primaryKey"`
-	ExerciseID uuid.UUID `gorm:"size:30"`
+	Title      string
+	UserID     uuid.UUID `gorm:"size:40"`
+	User       User      `gorm:"foreignKey:UserID"`
+	Body       string
+	Path       string
+	Nice       int
+	Point      int
+	ExerciseID uuid.UUID `gorm:"size:40"`
 	Exercise   Exercise
-	MenuID     uuid.UUID `gorm:"size:40"`
-	Menu       Menu
-	No         int
-	Time       int
 }
 
-type Menu struct {
-	ID            uuid.UUID `gorm:"primaryKey"`
-	Title         string
-	UserID        uuid.UUID `gorm:"size:30"`
-	User          User
-	Body          string
-	Path          string
-	Nice          int
-	Point         int
-	ExerciseParts []ExercisePart
+func AddMenu(menu Menu) error {
+	err := db.Create(&menu).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func SearchMenu(word string) ([]Menu, error) {
+type ResExercise struct {
+	ExerciseId uuid.UUID `json:"exerciseId"`
+	Name       string    `json:"exerciseName"`
+}
+
+type ResMenu struct {
+	MenuId    uuid.UUID   `json:"menuId"`
+	Title     string      `json:"title"`
+	UserId    uuid.UUID   `json:"userId"`
+	UserName  string      `json:"username"`
+	Body      string      `json:"body"`
+	Nice      int         `json:"nice"`
+	Point     int         `json:"point"`
+	Exercises ResExercise `json:"exercises"`
+}
+type ResSearch struct {
+	ResMenus []ResMenu `json:"menus"`
+}
+
+func SearchMenu(word string) (*ResSearch, error) {
 	var menus []Menu
 	err := db.Where("body LIKE ?", "%"+word+"%").Find(&menus).Error
 	if err != nil {

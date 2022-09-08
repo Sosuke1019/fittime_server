@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -36,16 +35,12 @@ func CreateDummy() {
 	var users []User
 	db.Find(&users)
 	for _, user := range users {
-		fmt.Println(user)
 		for _, exerciseId := range exerciseIdList {
-			fmt.Println(exerciseId)
 			id, _ := uuid.NewUUID()
 			menu := Menu{ID: id, UserID: user.ID, ExerciseID: exerciseId}
-			fmt.Println(menu)
 			db.Create(&menu)
 			id, _ = uuid.NewUUID()
 			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
-			fmt.Println(favorite)
 			db.Create(&favorite)
 		}
 	}
