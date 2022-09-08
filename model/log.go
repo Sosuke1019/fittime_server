@@ -14,3 +14,19 @@ type Log struct {
 	MenuId uuid.UUID `gorm:"size:40"`
 	Menu   Menu
 }
+
+func AddLog(userId uuid.UUID, menuId uuid.UUID) error {
+	id, err := uuid.NewUUID()
+
+	date := time.Now()
+
+	newLog := Log{
+		ID:     id,
+		UserID: userId,
+		Date:   date,
+		MenuId: menuId,
+	}
+
+	err = db.Model(&Log{}).Create(&newLog).Error
+	return err
+}

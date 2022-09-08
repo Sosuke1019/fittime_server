@@ -35,6 +35,8 @@ func SetRouter(e *echo.Echo) error {
 				apiUserId.PATCH("/profile", UpdateProfileHandler)
 				apiUserId.PATCH("/username", UpdateUsernameHandler)
 
+				apiUserId.POST("/log/:menuId", AddLogHandler)
+
 				apiUserId.POST("/menu", PostMenuHandler)
 				apiUserId.GET("/favorite", GetFavoriteHandler)
 				apiUserId.POST("/favorite/:menuId", PostFavoriteHandler)
