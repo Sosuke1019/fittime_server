@@ -31,10 +31,13 @@ func SetRouter(e *echo.Echo) error {
 
 			apiUserId := apiUser.Group("/:userId")
 			{
-				apiUserId.PATCH("/profile", AddProfileHandler)
+				apiUserId.GET("", GetUserHandler)
+				apiUserId.PATCH("/profile", UpdateProfileHandler)
+				apiUserId.PATCH("/username", UpdateUsernameHandler)
 
 				apiUserId.POST("/menu", PostMenuHandler)
 			}
+
 		}
 
 		// Exercise
