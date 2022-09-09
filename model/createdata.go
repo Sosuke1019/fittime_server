@@ -1,8 +1,6 @@
 package model
 
 import (
-	"strconv"
-
 	"github.com/google/uuid"
 )
 
@@ -23,10 +21,11 @@ func CreateExercise() []uuid.UUID {
 }
 
 func CreateUserDummy() {
-	for i := 0; i < 10; i++ {
-		CreateUser("username"+strconv.Itoa(i), strconv.Itoa(i)+"@test.com",
-			"password"+strconv.Itoa(i))
-	}
+	CreateUser("Taro", "taro@gmail.com", "password")
+	CreateUser("Yumi", "yumi@icloud.com", "password")
+	CreateUser("Kenta", "kenta@gmail.com", "password")
+	CreateUser("Mei", "Mei@icloud.com", "password")
+	CreateUser("Ryosuke", "ryosuke@icloud.com", "password")
 }
 
 func CreateDummy() {
@@ -34,21 +33,92 @@ func CreateDummy() {
 	exerciseIdList := CreateExercise()
 	var users []User
 	db.Find(&users)
-	var i int = 0
-	for _, user := range users {
-		for _, exerciseId := range exerciseIdList {
-			i++
+		exerciseIdList {
 			id, _ := uuid.NewUUID()
-			title := "menuTitle" + strconv.Itoa(i)
-			body := "menuBody" + strconv.Itoa(i)
 			menu := Menu{
 				ID:         id,
-				Title:      title,
+				Title:      "ムキムキメニュー",
 				UserID:     user.ID,
-				Body:       body,
+				Body:       "ムキムキになります",
 				Path:       "",
-				Nice:       0,
-				Point:      0,
+				Nice:       2,
+				Point:      10,
+				ExerciseID: exerciseId,
+			}
+			db.Create(&menu)
+			id, _ = uuid.NewUUID()
+			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
+			db.Create(&favorite)
+		}
+		exerciseIdList {
+			id, _ := uuid.NewUUID()
+			title := "menuTitle"
+			body := "menuBody"
+			menu := Menu{
+				ID:         id,
+				Title:      "朝の運動",
+				UserID:     user.ID,
+				Body:       "程よい汗をかけます",
+				Path:       "",
+				Nice:       4,
+				Point:      3,
+				ExerciseID: exerciseId,
+			}
+			db.Create(&menu)
+			id, _ = uuid.NewUUID()
+			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
+			db.Create(&favorite)
+		}
+		exerciseIdList {
+			id, _ := uuid.NewUUID()
+			title := "menuTitle"
+			body := "menuBody"
+			menu := Menu{
+				ID:         id,
+				Title:      "家族で運動",
+				UserID:     user.ID,
+				Body:       "家族みんなで汗をかきましょう",
+				Path:       "",
+				Nice:       80,
+				Point:      7,
+				ExerciseID: exerciseId,
+			}
+			db.Create(&menu)
+			id, _ = uuid.NewUUID()
+			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
+			db.Create(&favorite)
+		}
+		exerciseIdList {
+			id, _ := uuid.NewUUID()
+			title := "menuTitle"
+			body := "menuBody"
+			menu := Menu{
+				ID:         id,
+				Title:      "激しいメニュー",
+				UserID:     user.ID,
+				Body:       "限界突破しましょう！",
+				Path:       "",
+				Nice:       6,
+				Point:      10,
+				ExerciseID: exerciseId,
+			}
+			db.Create(&menu)
+			id, _ = uuid.NewUUID()
+			favorite := Favorite{ID: id, MenuID: menu.ID, UserID: user.ID}
+			db.Create(&favorite)
+		}
+		exerciseIdList {
+			id, _ := uuid.NewUUID()
+			title := "menuTitle"
+			body := "menuBody"
+			menu := Menu{
+				ID:         id,
+				Title:      "休日ダイエット",
+				UserID:     user.ID,
+				Body:       "休日もダイエットを継続!",
+				Path:       "",
+				Nice:       20,
+				Point:      6,
 				ExerciseID: exerciseId,
 			}
 			db.Create(&menu)
