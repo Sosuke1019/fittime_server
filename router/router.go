@@ -1,6 +1,7 @@
 package router
 
 import (
+	"net/http"
 	_ "net/http"
 	"os"
 
@@ -16,7 +17,12 @@ func SetRouter(e *echo.Echo) error {
 		Output: os.Stdout,
 	}))
 	e.Use(middleware.Recover())
-	e.Use(middleware.CORS())
+	// e.Use(middleware.CORS())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"https://fittime-client2.vercel.app", "https://labstack.net"},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodPatch, http.MethodDelete},
+	}))
 
 	// api
 	api := e.Group("/api")
